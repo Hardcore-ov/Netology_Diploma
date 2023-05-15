@@ -32,13 +32,15 @@ class User(AbstractUser):
         max_length=10, choices=USER_TYPE_CHOICES, default='customer'
     )
     is_active = models.BooleanField(default=True)
+    first_name = None
+    last_name = None
 
     objects = UserManager()
 
     REQUIRED_FIELDS = ['email', 'company', 'position']
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.username} {self.email}'
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -265,7 +267,7 @@ class Order(models.Model):
     def sum_total_price(self):
         """
         Calculates total price of items in order
-        :return: total quantity of items
+        :return: total price of items
         """
         return sum([position.purchase_price for position in self.order_items.all()])
 
